@@ -54,7 +54,7 @@ const testimonials = [
     rating: 5,
   },
   {
-    name: "Lisa Rodriguez",
+    name: "Maria Rodriguez",
     role: "Business Owner",
     review: "The IUL policy provides both protection for my family and growth potential. Best financial decision I've made.",
     rating: 5,
