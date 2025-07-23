@@ -44,18 +44,23 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: 'Name must be at least 2 characters.',
   }),
-  age: z.string().refine((age) => {
-    const num = parseInt(age);
-    return num >= 18 && num <= 100;
+  age: z.string().min(1, {
+    message: 'Age is required.',
+  }).refine((val) => {
+    const num = Number(val);
+    return !isNaN(num) && num >= 18 && num <= 100;
   }, {
     message: 'Age must be between 18 and 100.',
   }),
   contactMethod: z.enum(['email', 'phone'], {
     required_error: 'Please select a contact method.',
   }),
-  email: z.string().email({
+  email: z.string().optional().refine((val) => {
+    if (!val || val === '') return true; // Allow empty/undefined
+    return z.string().email().safeParse(val).success;
+  }, {
     message: 'Please enter a valid email address.',
-  }).optional(),
+  }),
   phone: z.string().optional(),
   services: z.array(z.enum(['term-life', 'annuity', 'iul'])).min(1, {
     message: 'Please select at least one service.',
@@ -67,16 +72,33 @@ const formSchema = z.object({
     message: 'Please select a time.',
   }),
 }).refine((data) => {
+  // Check if email is provided when email is selected
   if (data.contactMethod === 'email' && !data.email) {
     return false;
   }
+  return true;
+}, {
+  message: 'Please enter your email address.',
+  path: ['email'],
+}).refine((data) => {
+  // Check if phone is provided when phone is selected
   if (data.contactMethod === 'phone' && !data.phone) {
     return false;
   }
   return true;
 }, {
-  message: 'Please provide your contact information based on the selected method.',
-  path: ['contactMethod'],
+  message: 'Please enter your phone number.',
+  path: ['phone'],
+}).refine((data) => {
+  // Check phone format when phone is provided
+  if (data.contactMethod === 'phone' && data.phone) {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(data.phone);
+  }
+  return true;
+}, {
+  message: 'Phone number must be exactly 10 digits.',
+  path: ['phone'],
 });
 
 const timeSlots = [
@@ -95,8 +117,8 @@ export function ConsultationForm() {
       name: '',
       age: '',
       contactMethod: 'email',
-      email: '',
-      phone: '',
+      email: undefined,
+      phone: undefined,
       services: [],
       date: undefined,
       time: '',
@@ -105,18 +127,37 @@ export function ConsultationForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
     
-    const formattedValues = {
-      ...values,
-      date: format(values.date, 'yyyy-MM-dd'),
-    };
-    
-    console.log('Form submitted:', formattedValues);
-    alert('Consultation request submitted successfully! We will contact you soon.');
-    
-    form.reset();
-    setIsSubmitting(false);
+    try {
+      const formattedValues = {
+        ...values,
+        date: format(values.date, 'yyyy-MM-dd'),
+      };
+      
+      const response = await fetch('/api/consultation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formattedValues),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit consultation request');
+      }
+
+      const result = await response.json();
+      console.log('Form submitted successfully:', result);
+      alert('Consultation request submitted successfully! We will contact you soon.');
+      
+      form.reset();
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Sorry, there was an error submitting your request. Please try again or contact us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -144,7 +185,14 @@ export function ConsultationForm() {
                 <FormItem>
                   <FormLabel>Age</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 35" {...field} />
+                    <Input 
+                      type="number" 
+                      placeholder="e.g., 35" 
+                      min="18" 
+                      max="100" 
+                      step="1"
+                      {...field} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -162,6 +210,14 @@ export function ConsultationForm() {
                   onValueChange={(value) => {
                     field.onChange(value);
                     setContactMethod(value as 'email' | 'phone');
+                    // Clear the other contact field when switching
+                    if (value === 'email') {
+                      form.setValue('phone', undefined);
+                      form.clearErrors('phone');
+                    } else {
+                      form.setValue('email', undefined);
+                      form.clearErrors('email');
+                    }
                   }} 
                   defaultValue={field.value}
                 >
@@ -184,11 +240,17 @@ export function ConsultationForm() {
             <FormField
               control={form.control}
               name="email"
-              render={({ field }) => (
+              render={({ field: { value, onChange, ...rest } }) => (
                 <FormItem>
                   <FormLabel>Email Address</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="john.doe@example.com" {...field} />
+                    <Input 
+                      type="email" 
+                      placeholder="john.doe@example.com" 
+                      value={value || ''}
+                      onChange={onChange}
+                      {...rest}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -198,11 +260,24 @@ export function ConsultationForm() {
             <FormField
               control={form.control}
               name="phone"
-              render={({ field }) => (
+              render={({ field: { value, onChange, ...rest } }) => (
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input type="tel" placeholder="(123) 456-7890" {...field} />
+                    <Input 
+                      type="tel" 
+                      placeholder="2538678900" 
+                      maxLength={10}
+                      pattern="[0-9]{10}"
+                      title="Please enter exactly 10 digits"
+                      value={value || ''}
+                      onChange={(e) => {
+                        // Only allow digits
+                        const numericValue = e.target.value.replace(/\D/g, '');
+                        onChange(numericValue);
+                      }}
+                      {...rest}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

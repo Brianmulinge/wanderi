@@ -8,7 +8,6 @@ import {
   Award,
   CheckCircle
 } from 'lucide-react';
-import { ThemeToggle } from './components/ThemeToggle';
 import { MobileMenu } from './components/MobileMenu';
 import { ConsultationForm } from './components/ConsultationForm';
 
@@ -34,7 +33,7 @@ const services = [
 ];
 
 const stats = [
-  { number: "15+", label: "Years Experience" },
+  { number: "10+", label: "Years Experience" },
   { number: "2,500+", label: "Families Protected" },
   { number: "98%", label: "Client Satisfaction" },
   { number: "$50M+", label: "Coverage Provided" },
@@ -69,8 +68,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center space-x-3">
-              <Shield className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold text-foreground">Wanderi</span>
+              <Shield className="h-10 w-10 text-primary" />
+             <div className="flex flex-col">
+             <span className="text-2xl font-bold text-foreground">Wanderi John</span>
+             <span className="text-normal font-bold text-foreground">Licensed Insurance Agent</span>
+             </div>
             </div>
             
             {/* Desktop Navigation */}
@@ -78,11 +80,9 @@ export default function Home() {
               <nav className="flex space-x-8 text-sm font-medium">
                 <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">Services</a>
                 <a href="#about" className="text-muted-foreground hover:text-primary transition-colors">About</a>
-                <a href="#testimonials" className="text-muted-foreground hover:text-primary transition-colors">Reviews</a>
                 <a href="#consultation" className="text-muted-foreground hover:text-primary transition-colors">Consultation</a>
               </nav>
               <div className="flex items-center space-x-4">
-                <ThemeToggle />
                 <a href="#consultation" className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors">
                   Book Now
                 </a>
@@ -91,7 +91,6 @@ export default function Home() {
 
             {/* Mobile Navigation */}
             <div className="md:hidden flex items-center space-x-4">
-              <ThemeToggle />
               <MobileMenu />
             </div>
           </div>
@@ -105,7 +104,7 @@ export default function Home() {
             <h1 className="text-4xl sm:text-6xl font-bold text-foreground leading-tight">
               Protecting Families,
               <br />
-              <span className="text-primary">Securing Futures</span>
+              <span className="text-primary">Securing Future</span>
             </h1>
             <p className="mt-6 max-w-2xl mx-auto text-xl text-muted-foreground">
               Expert guidance on life insurance, annuities, and retirement planning. Let's build a financial safety net that grows with your family.
@@ -171,7 +170,7 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-                Why Choose Wanderi Insurance?
+                Why Choose Our Insurance?
               </h2>
               <p className="text-lg text-muted-foreground mb-8">
                 We understand that every family is unique. That's why we take the time to understand your specific needs, goals, and concerns before recommending any financial products.
@@ -188,7 +187,7 @@ export default function Home() {
                   <Award className="h-6 w-6 text-primary mt-1" />
                   <div>
                     <h4 className="font-semibold text-foreground">Expert Guidance</h4>
-                    <p className="text-muted-foreground">15+ years of experience helping families navigate complex financial decisions with confidence.</p>
+                    <p className="text-muted-foreground">10+ years of experience helping families navigate complex financial decisions with confidence.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
@@ -230,7 +229,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section id="testimonials" className="py-20 sm:py-24">
+      {/* <section id="testimonials" className="py-20 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground">What Our Families Say</h2>
@@ -255,7 +254,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Consultation Form Section */}
       <section id="consultation" className="py-20 sm:py-32 bg-muted/50">
@@ -301,7 +300,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-12 border-t border-border pt-8 text-center">
-            <p className="text-muted-foreground">&copy; {new Date().getFullYear()} Wanderi Insurance. All rights reserved.</p>
+            <p className="text-muted-foreground">&copy; {new Date().getFullYear()} With Our Insurance. All rights reserved.</p>
           </div>
         </div>
       </footer>

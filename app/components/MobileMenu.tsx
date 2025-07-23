@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Menu, X, Shield } from 'lucide-react';
-import { ThemeToggle } from './ThemeToggle';
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +12,6 @@ export function MobileMenu() {
   const menuItems = [
     { href: '#services', label: 'Services' },
     { href: '#about', label: 'About' },
-    { href: '#testimonials', label: 'Reviews' },
     { href: '#consultation', label: 'Consultation' },
   ];
 
@@ -66,12 +64,7 @@ export function MobileMenu() {
                 </ul>
               </nav>
 
-              <div className="p-6 border-t border-border space-y-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-muted-foreground">Switch Theme</span>
-                  <ThemeToggle />
-                </div>
-                
+              <div className="p-6 border-t border-border">
                 <a
                   href="#consultation"
                   onClick={closeMenu}
