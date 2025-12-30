@@ -32,7 +32,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${playfair.variable} font-sans antialiased`}
       >
-        {children}
+          {children}
       </body>
     </html>
   );

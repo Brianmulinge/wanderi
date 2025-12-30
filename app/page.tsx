@@ -28,13 +28,13 @@ const services = [
     icon: Shield,
     title: "IUL (Indexed Universal Life)",
     description: "Life insurance with investment potential and tax-advantaged growth.",
-    features: ["Market upside potential", "Downside protection", "Tax-free loans"]
+    features: ["Market upside potential", "Downside protection", "Tax Deferred Growth"]
   },
 ];
 
 const stats = [
-  { number: "10+", label: "Years Experience" },
-  { number: "2,500+", label: "Families Protected" },
+  { number: "5+", label: "Years Experience" },
+  { number: "500+", label: "Families Protected" },
   { number: "98%", label: "Client Satisfaction" },
   { number: "$50M+", label: "Coverage Provided" },
 ];
@@ -170,7 +170,7 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-                Why Choose Our Insurance?
+                Why Choose Our Insurance with Us?
               </h2>
               <p className="text-lg text-muted-foreground mb-8">
                 We understand that every family is unique. That's why we take the time to understand your specific needs, goals, and concerns before recommending any financial products.
@@ -187,7 +187,7 @@ export default function Home() {
                   <Award className="h-6 w-6 text-primary mt-1" />
                   <div>
                     <h4 className="font-semibold text-foreground">Expert Guidance</h4>
-                    <p className="text-muted-foreground">10+ years of experience helping families navigate complex financial decisions with confidence.</p>
+                    <p className="text-muted-foreground">5+ years of experience helping families navigate complex financial decisions with confidence.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">

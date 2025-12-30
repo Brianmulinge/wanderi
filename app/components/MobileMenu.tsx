@@ -32,7 +32,7 @@ export function MobileMenu() {
             onClick={closeMenu}
           />
           
-          <div className="fixed right-0 top-0 h-full w-full max-w-sm bg-background shadow-2xl">
+          <div className="fixed right-0 top-0 h-full w-full max-w-sm bg-background/95 backdrop-blur-lg shadow-2xl border-l border-border">
             <div className="flex flex-col h-full">
               <div className="flex items-center justify-between p-6 border-b border-border">
                 <div className="flex items-center space-x-3">

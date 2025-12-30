@@ -129,11 +129,11 @@ export function ConsultationForm() {
     setIsSubmitting(true);
     
     try {
-      const formattedValues = {
-        ...values,
-        date: format(values.date, 'yyyy-MM-dd'),
-      };
-      
+    const formattedValues = {
+      ...values,
+      date: format(values.date, 'yyyy-MM-dd'),
+    };
+    
       const response = await fetch('/api/consultation', {
         method: 'POST',
         headers: {
@@ -149,14 +149,14 @@ export function ConsultationForm() {
 
       const result = await response.json();
       console.log('Form submitted successfully:', result);
-      alert('Consultation request submitted successfully! We will contact you soon.');
-      
-      form.reset();
+    alert('Consultation request submitted successfully! We will contact you soon.');
+    
+    form.reset();
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Sorry, there was an error submitting your request. Please try again or contact us directly.');
     } finally {
-      setIsSubmitting(false);
+    setIsSubmitting(false);
     }
   }
 
